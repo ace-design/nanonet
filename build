@@ -8,7 +8,7 @@ from net import *
 # custom exec inspired by mininet
 
 def usage():
-	print 'Usage: %s topofile.py toponame [outdir]' % (sys.argv[0])
+	print('Usage: %s topofile.py toponame [outdir]' % (sys.argv[0]))
 	sys.exit(-1)
 
 if len(sys.argv) < 3 or len(sys.argv) > 4:
@@ -23,8 +23,8 @@ topos = {}
 sys.path.append('.')
 
 customs = {}
-execfile(sys.argv[1], customs, customs)
-for name, val in customs.iteritems():
+exec(compile(open(sys.argv[1], "rb").read(), sys.argv[1], 'exec'), customs, customs)
+for name, val in customs.items():
 	if name == 'topos':
 		globals()['topos'].update(val)
 	else:

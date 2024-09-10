@@ -40,22 +40,22 @@ class Nanonet(object):
 #			print e.port2
 #			print 'For port1 %d and port2 %d' % (e.port1, e.port2)
 
-			e.node1.intfs_addr[e.port1] = socket.inet_ntop(socket.AF_INET6, str(a1))+'/'+str(self.linknet.submask)
-			e.node2.intfs_addr[e.port2] = socket.inet_ntop(socket.AF_INET6, str(a2))+'/'+str(self.linknet.submask)
+			e.node1.intfs_addr[e.port1] = socket.inet_ntop(socket.AF_INET6, a1)+'/'+str(self.linknet.submask)
+			e.node2.intfs_addr[e.port2] = socket.inet_ntop(socket.AF_INET6, a2)+'/'+str(self.linknet.submask)
 
 		for n in self.topo.nodes:
 			enet = self.loopnet.next_net()
 			enet[-1] = 1
 
-			n.addr = socket.inet_ntop(socket.AF_INET6, str(enet))+'/'+str(self.loopnet.submask)
+			n.addr = socket.inet_ntop(socket.AF_INET6, enet)+'/'+str(self.loopnet.submask)
 
 	def start(self, netname=None):
-		print '# Building topology...'
+		print('# Building topology...')
 		self.topo.build()
-		print '# Assigning prefixes...'
+		print('# Assigning prefixes...')
 		self.assign()
 
-		print '# Running dijkstra... (%d nodes)' % len(self.topo.nodes)
+		print('# Running dijkstra... (%d nodes)' % len(self.topo.nodes))
 		self.topo.compute()
 
 		if netname is not None:
@@ -105,7 +105,7 @@ class Nanonet(object):
 
 		if not noroute:
 			for n in self.topo.nodes:
-				for dst in n.routes.keys():
+				for dst in list(n.routes.keys()):
 					rts = n.routes[dst]
 					laddr = n.addr.split('/')[0]
 					if len(rts) == 1:
@@ -120,7 +120,7 @@ class Nanonet(object):
 		for c in host_cmd:
 			wr('%s' % c)
 
-		for n in node_cmd.keys():
+		for n in list(node_cmd.keys()):
 			wr('ip netns exec %s bash -c \'%s\'' % (n.name, "; ".join(node_cmd[n])))
 
 	def igp_prepare_link_down(self, name1, name2):

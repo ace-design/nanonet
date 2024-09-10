@@ -19,7 +19,7 @@ class Node(object):
 		self.routes = {}
 
 	def add_route(self, r):
-		if r.dst not in self.routes.keys():
+		if r.dst not in list(self.routes.keys()):
 			self.routes[r.dst] = [r]
 		else:
 			self.routes[r.dst].append(r)
@@ -255,7 +255,7 @@ class Topo(object):
 	def compute_node(self, n):
 		n.routes = {}
 		dist, path = self.dijkstra(n)
-		for t in dist.keys():
+		for t in list(dist.keys()):
 			if len(path[t]) == 0:
 				continue
 			nh = self.get_nh_from_paths(path[t])
@@ -268,6 +268,6 @@ class Topo(object):
 	def compute(self):
 		cnt = 0
 		for n in self.nodes:
-			print '# Running dijkstra for node %s (%d/%d)' % (n.name, cnt+1, len(self.nodes))
+			print('# Running dijkstra for node %s (%d/%d)' % (n.name, cnt+1, len(self.nodes)))
 			self.compute_node(n)
 			cnt += 1

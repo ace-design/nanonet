@@ -16,7 +16,7 @@ class V6Net(object):
 		self.idx_low = self.submask/8 - 1
 
 	def next_net(self):
-		i = self.idx_low
+		i = int(self.idx_low)
 
 		while i >= self.idx_high:
 			if self.curnet[i] == 0xff:
